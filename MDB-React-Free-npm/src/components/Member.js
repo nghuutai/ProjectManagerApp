@@ -30,7 +30,7 @@ class Member extends Component {
 
     getMemberFromTable = (value) => {
         this.setState({
-            id: value.id,
+            id: value._id,
             name: value.name,
             phone: value.phone,
             birthday: value.birthday,
@@ -56,14 +56,13 @@ class Member extends Component {
 
     handleCreateMember = () => {
         if(this.state.name !== '' && this.state.phone !== '' && this.state.birthday !== '') {
-            let member = [{
-                id: 3,
+            let member = {
                 name: this.state.name,
                 phone: this.state.phone,
                 birthday: this.state.birthday
-            }]
+            }
             //this.props.members.concat(member);
-            this.props.getAPI.createMember(this.props.members.concat(member));
+            this.props.getAPI.createMember(member);
             this.resetForm();
         }
         
@@ -71,30 +70,35 @@ class Member extends Component {
 
     handleEdit = (value) => {
         if(this.state.name !== '' && this.state.phone !== '' && this.state.birthday !== '') {
-            let editMembers = this.props.members.map((value) => {
-                console.log(value.id)
-                console.log(this.state.id)
-                if(value.id === this.state.id){
-                    value.name = this.state.name;
-                    value.phone = this.state.phone;
-                    value.birthday = this.state.birthday;
-                }
-                return value;
-            })
+            // let editMembers = this.props.members.map((value) => {
+            //     console.log(value._id)
+            //     console.log(this.state.id)
+            //     if(value.id === this.state.id){
+            //         value.name = this.state.name;
+            //         value.phone = this.state.phone;
+            //         value.birthday = this.state.birthday;
+            //     }
+            //     return value;
+            // })
+            let editMembers = {
+                name: this.state.name,
+                phone: this.state.phone,
+                birthday: this.state.birthday
+            }
             console.log(editMembers);
-            // let member = [{
-            //     name: this.state.name,
-            //     phone: this.state.phone,
-            //     birthday: this.state.birthday
-            // }]
-            //this.props.members.concat(member);
-            this.props.getAPI.editMember(editMembers);
+            this.props.getAPI.editMember(editMembers, this.state.id);
             this.toggle(value)
         }
     }
 
+    componentWillMount() {
+        this.props.getAPI.getMembers();
+    }
+    
+
     render() {
-        console.log(this.state)
+        console.log(this.props.members)
+        console.log(this.state.birthday);
         return (
             <div>
                 <Nav />
