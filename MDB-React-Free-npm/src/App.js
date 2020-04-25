@@ -3,7 +3,7 @@ import { MDBContainer } from "mdbreact";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Member from './components/Member';
 import Project from './components/Project';
-import Nav from './components/Nav';
+import Home from './components/Home';
 import Assign from './components/Assign'
 import ProjectDetail from './components/ProjectDetail';
 
@@ -12,7 +12,7 @@ class App extends Component {
     return (
       <Router>
         <MDBContainer>
-          <Route exact path="/" component={Nav} />
+          <Route exact path="/" component={Home} />
           <Route path="/member" component={Member} />
           <Route path="/project" component={Project} />
           <Route path="/assign" component={Assign} />

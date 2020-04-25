@@ -4,6 +4,7 @@ import { MDBBtn, MDBTable, MDBTableBody, MDBTableHead, MDBModal, MDBModalBody, M
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as getAPI from '../action/action';
+import Notification from './Notification';
 
 class Member extends Component {
     constructor(props) {
@@ -14,7 +15,10 @@ class Member extends Component {
             birthday: '',
             id: '',
             modal: false,
-            member: {}
+            member: {},
+            notification: false,
+            notificationContent: 0,
+            enableSave: true
         }
     }
 
@@ -40,11 +44,15 @@ class Member extends Component {
     handleShowModal = (value, modal) => {
         this.toggle(modal);
         this.getMemberFromTable(value);
+        this.setState({
+            enableSave: true
+        })
     }
 
     handleChange = (event) => {
         this.setState({
             [event.target.name]: event.target.value,
+            enableSave: false
         })
     }
 
@@ -63,21 +71,15 @@ class Member extends Component {
             }
             this.props.getAPI.createMember(member);
             this.resetForm();
+            this.setState({
+                notification: true,
+                notificationContent: 1
+            })
         }
     }
 
     handleEdit = (value) => {
         if(this.state.name !== '' && this.state.phone !== '' && this.state.birthday !== '') {
-            // let editMembers = this.props.members.map((value) => {
-            //     console.log(value._id)
-            //     console.log(this.state.id)
-            //     if(value.id === this.state.id){
-            //         value.name = this.state.name;
-            //         value.phone = this.state.phone;
-            //         value.birthday = this.state.birthday;
-            //     }
-            //     return value;
-            // })
             let editMembers = {
                 name: this.state.name,
                 phone: this.state.phone,
@@ -85,6 +87,10 @@ class Member extends Component {
             }
             this.props.getAPI.editMember(editMembers, this.state.id);
             this.toggle(value)
+            this.setState({
+                notification: true,
+                notificationContent: 2,
+            })
         }
     }
 
@@ -92,11 +98,44 @@ class Member extends Component {
         this.props.getAPI.getMembers();
     }
     
+    displayNotification = () => {
+        if(this.state.notification) {
+            return (
+                <Notification 
+                notificationContent={this.state.notificationContent} 
+                offNotification={(value) => this.offNotification(value)} />
+            )
+        }
+    }
+
+    offNotification = (value) => {
+        this.setState({
+            notification: value
+        })
+    }
+
+    disabledButton = (value) => {
+        if(!value) {
+            return (
+                <MDBBtn color="primary" onClick={() => this.handleEdit(this.state.modal)}>Save changes</MDBBtn>
+            )
+        } else {
+            return (
+                <MDBBtn color="primary" disabled onClick={() => this.handleEdit(this.state.modal)}>Save changes</MDBBtn>
+            )
+        }
+    }
 
     render() {
         return (
             <div>
                 <Nav />
+                {
+                    this.displayNotification()
+                }
+                <div style={{textAlign: 'center', marginTop: '40px'}}>
+                    <h1>Member Management</h1>
+                </div>
                 <div className="form-group" style={{marginTop: '10px'}}>
                     <label htmlFor="formGroupExampleInput">Name</label>
                     <input
@@ -180,7 +219,10 @@ class Member extends Component {
                                             </MDBModalBody>
                                             <MDBModalFooter>
                                                 <MDBBtn color="secondary" onClick={this.toggle}>Close</MDBBtn>
-                                                <MDBBtn color="primary" onClick={() => this.handleEdit(this.state.modal)}>Save changes</MDBBtn>
+                                                {
+                                                    this.disabledButton(this.state.enableSave)
+                                                }
+                                                {/* <MDBBtn color="primary" onClick={() => this.handleEdit(this.state.modal)}>Save changes</MDBBtn> */}
                                             </MDBModalFooter>
                                         </MDBModal>
                                         </>

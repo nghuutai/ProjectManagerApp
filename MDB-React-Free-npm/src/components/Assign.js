@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as getAPI from '../action/action';
 import { MDBBtn } from 'mdbreact';
-
+import Notification from './Notification';
 
 class Assign extends Component {
 
@@ -12,7 +12,9 @@ class Assign extends Component {
         super(props)
         this.state = {
             idProject: '',
-            members: []
+            members: [],
+            notification: false,
+            notificationContent: 0,
         }
     }
 
@@ -41,7 +43,25 @@ class Assign extends Component {
     handleAssign = (members, id) => {
         this.props.getAPI.assignMember(members, id);
         this.setState({
-            members: []
+            members: [],
+            notification: true,
+            notificationContent: 5,
+        })
+    }
+
+    displayNotification = () => {
+        if(this.state.notification) {
+            return (
+                <Notification 
+                notificationContent={this.state.notificationContent} 
+                offNotification={(value) => this.offNotification(value)} />
+            )
+        }
+    }
+
+    offNotification = (value) => {
+        this.setState({
+            notification: value
         })
     }
 
@@ -62,6 +82,9 @@ class Assign extends Component {
         }
         return (
             <div>
+                {
+                    this.displayNotification()
+                }
                 <Nav />
                 <h1 style={{textAlign: 'center'}}>Assign member to project</h1>
                 <label htmlFor="formGroupExampleInput">Select Project</label>

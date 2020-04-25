@@ -4,13 +4,18 @@ import { MDBBtn, MDBTable, MDBTableBody, MDBTableHead, MDBModal, MDBModalBody, M
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as getAPI from '../action/action';
+import Notification from './Notification';
+
 class Project extends Component {
     constructor(props) {
         super(props)
         this.state = {
             name: '',
             description: '',
-            modal: false
+            modal: false,
+            notification: false,
+            notificationContent: 0,
+            enableSave: true
         }
     }
 
@@ -34,11 +39,15 @@ class Project extends Component {
     handleShowModal = (value, modal) => {
         this.toggle(modal);
         this.getProjectFromTable(value);
+        this.setState({
+            enableSave: true
+        })
     }
 
     handleChange = (event) => {
         this.setState({
             [event.target.name]: event.target.value,
+            enableSave: false
         })
     }
 
@@ -55,6 +64,10 @@ class Project extends Component {
             }
             this.props.getAPI.createProject(project);
             this.resetForm();
+            this.setState({
+                notification: true,
+                notificationContent: 3
+            })
         }
     }
 
@@ -66,6 +79,10 @@ class Project extends Component {
             }
             this.props.getAPI.editProject(editProject, this.state.id);
             this.toggle(value)
+            this.setState({
+                notification: true,
+                notificationContent: 4,
+            })
         }
     }
 
@@ -73,10 +90,44 @@ class Project extends Component {
         this.props.getAPI.getProjects();
     }
 
+    displayNotification = () => {
+        if(this.state.notification) {
+            return (
+                <Notification 
+                notificationContent={this.state.notificationContent} 
+                offNotification={(value) => this.offNotification(value)} />
+            )
+        }
+    }
+
+    offNotification = (value) => {
+        this.setState({
+            notification: value
+        })
+    }
+
+    disabledButton = (value) => {
+        if(!value) {
+            return (
+                <MDBBtn color="primary" onClick={() => this.handleEdit(this.state.modal)}>Save changes</MDBBtn>
+            )
+        } else {
+            return (
+                <MDBBtn color="primary" disabled onClick={() => this.handleEdit(this.state.modal)}>Save changes</MDBBtn>
+            )
+        }
+    }
+
     render() {
         return (
             <div>
+                {
+                    this.displayNotification()
+                }
                 <Nav />
+                <div style={{textAlign: 'center', marginTop: '40px'}}>
+                    <h1>Project Management</h1>
+                </div>
                 <div className="form-group" style={{marginTop: '10px'}}>
                     <label htmlFor="formGroupExampleInput">Name</label>
                     <input
@@ -141,7 +192,10 @@ class Project extends Component {
                                             </MDBModalBody>
                                             <MDBModalFooter>
                                                 <MDBBtn color="secondary" onClick={this.toggle}>Close</MDBBtn>
-                                                <MDBBtn color="primary" onClick={() => this.handleEdit(this.state.modal)}>Save changes</MDBBtn>
+                                                {
+                                                    this.disabledButton(this.state.enableSave)
+                                                }
+                                                {/* <MDBBtn color="primary" onClick={() => this.handleEdit(this.state.modal)}>Save changes</MDBBtn> */}
                                             </MDBModalFooter>
                                         </MDBModal>
                                         </>
