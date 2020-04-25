@@ -41,3 +41,30 @@ export const getMembers = () => {
     }
 }
 
+export const createProject = (project) => {
+    return function(dispatch) {
+        Axios.post(URL + route.PROJECT, project)
+            .then(function(response) {
+                dispatch({ type: types.CREATE_PROJECT, newProject: response.data.data})
+            })
+    }
+}
+
+export const editProject = (project, id) => {
+    return function(dispatch) {
+        Axios.put(URL + route.PROJECT + "/" + id, project)
+            .then(function(response) {
+                dispatch({ type: types.EDIT_PROJECT, editProject: response.data.data})
+            })
+    }
+}
+
+export const getProjects = () => {
+    return function(dispatch) {
+        Axios.get(URL + route.PROJECT)
+            .then(function (response) {
+                console.log(response.data.data);
+                dispatch({ type: types.GET_PROJECT, getProjects: response.data.data })
+            })
+    }
+}

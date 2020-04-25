@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const cors = require('cors');
 const { getMembers, addMember, deleteMember, updateMember} = require('../controllers/member');
 
 router

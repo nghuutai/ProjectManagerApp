@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const colors = require('colors');
 const morgan = require('morgan');
 const memberRoute = require('./routes/member');
+const projectRoute = require('./routes/project');
 const cors = require('cors');
 const connectDB = require('./config/db');
 
@@ -18,6 +19,7 @@ app.use(express.json());
 
 
 app.use('/api/member', memberRoute);
+app.use('/api/project', projectRoute)
 
 const PORT = process.env.PORT
 

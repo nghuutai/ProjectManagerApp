@@ -61,11 +61,9 @@ class Member extends Component {
                 phone: this.state.phone,
                 birthday: this.state.birthday
             }
-            //this.props.members.concat(member);
             this.props.getAPI.createMember(member);
             this.resetForm();
         }
-        
     }
 
     handleEdit = (value) => {
@@ -85,7 +83,6 @@ class Member extends Component {
                 phone: this.state.phone,
                 birthday: this.state.birthday
             }
-            console.log(editMembers);
             this.props.getAPI.editMember(editMembers, this.state.id);
             this.toggle(value)
         }
@@ -97,8 +94,6 @@ class Member extends Component {
     
 
     render() {
-        console.log(this.props.members)
-        console.log(this.state.birthday);
         return (
             <div>
                 <Nav />
