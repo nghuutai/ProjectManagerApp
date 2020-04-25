@@ -6,7 +6,8 @@ import lodash from 'lodash';
 
 const initState = {
     members: [],
-    projects: []
+    projects: [],
+    detail: []
 }
 
 const reducer = (state = initState, action) => {
@@ -40,6 +41,18 @@ const reducer = (state = initState, action) => {
                 return value;
             })
             return lodash.assign({}, state, {projects: editProjects})
+        case types.ASSIGN_MEMBER:
+            let projects = state.projects.map((value) => {
+                if(value._id === action.assign._id){
+                    value.name = action.assign.name;
+                    value.description = action.assign.description;
+                    value.members = action.assign.membersl
+                }
+                return value;
+            })
+            return lodash.assign({}, state, {projects: projects})
+        case types.SHOW_DETAIL:
+            return lodash.assign({}, state, {detail: action.detail})
         default:
             return state;
     }

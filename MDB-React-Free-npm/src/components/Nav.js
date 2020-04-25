@@ -21,6 +21,9 @@ export default function Nav() {
                         <MDBNavItem>
                             <MDBNavLink to="/assign">Assign</MDBNavLink>
                         </MDBNavItem>
+                        <MDBNavItem>
+                            <MDBNavLink to="/projectdetail">Project Detail</MDBNavLink>
+                        </MDBNavItem>
                     </MDBNavbarNav>
                 </MDBCollapse>
             </MDBNavbar>

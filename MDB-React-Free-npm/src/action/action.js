@@ -68,3 +68,25 @@ export const getProjects = () => {
             })
     }
 }
+
+export const assignMember = (members, id) => {
+    console.log(id);
+    console.log(members);
+    return function(dispatch) {
+        Axios.put(URL + route.ASSIGN + "/" + id, members)
+            .then(function(response) {
+                console.log(response.data.data)
+                dispatch({ type: types.ASSIGN_MEMBER, assign: response.data.data})
+            })
+    }
+}
+
+export const showDetail = (id) => {
+    return function(dispatch) {
+        Axios.get(URL + route.PROJECT + "/" + id)
+            .then(function(response) {
+                console.log(response.data.data)
+                dispatch({ type: types.SHOW_DETAIL, detail: response.data.data.members})
+            })
+    }
+}

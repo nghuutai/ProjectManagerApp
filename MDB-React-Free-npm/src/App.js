@@ -5,6 +5,7 @@ import Member from './components/Member';
 import Project from './components/Project';
 import Nav from './components/Nav';
 import Assign from './components/Assign'
+import ProjectDetail from './components/ProjectDetail';
 
 class App extends Component {
   render() {
@@ -15,6 +16,7 @@ class App extends Component {
           <Route path="/member" component={Member} />
           <Route path="/project" component={Project} />
           <Route path="/assign" component={Assign} />
+          <Route path="/projectdetail" component={ProjectDetail} />
         </MDBContainer>
       </Router>
     );

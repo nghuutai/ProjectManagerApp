@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getProjects, addProject, deleteProject, updateProject, assignMember } = require('../controllers/project');
+const { getProjects, addProject, deleteProject, updateProject, assignMember, projectDetail } = require('../controllers/project');
 
 router
     .route('/')
@@ -9,6 +9,7 @@ router
 
 router
     .route('/:id')
+    .get(projectDetail)
     .delete(deleteProject)
     .put(updateProject);
 
